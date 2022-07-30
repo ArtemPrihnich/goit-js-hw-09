@@ -9,7 +9,6 @@ const daysCounter = document.querySelector('span[data-days]');
 const hoursCounter = document.querySelector('span[data-hours]');
 const minutesCounter = document.querySelector('span[data-minutes]');
 const secondsCounter = document.querySelector('span[data-seconds]');
-btnStart.setAttribute('disabled', '')
 
 let result = 0;
 const counter = 1000;
@@ -23,7 +22,8 @@ const options = {
       console.log(selectedDates[0]);
       console.log(options.defaultDate)
       if (selectedDates[0] <= options.defaultDate) {
-          return Notiflix.Notify.failure("Please choose a date in the future");
+          btnStart.setAttribute('disabled', '')
+          Notiflix.Notify.failure("Please choose a date in the future");
       } else {
           btnStart.removeAttribute('disabled');
           return result = selectedDates[0].getTime() - options.defaultDate.getTime();

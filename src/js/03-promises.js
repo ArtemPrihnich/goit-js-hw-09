@@ -43,13 +43,15 @@ function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
   const promise = new Promise((resolve, reject) => {
     if (shouldResolve) {
-      resolve(console.log(`✅ Fulfilled promise ${pos} in ${finalDelay}ms`));
+      resolve();
     } else {
-      reject(console.log(`❌ Rejected promise ${pos} in ${finalDelay}ms`));
+      reject();
   }
   })
 
   promise.then(success => Notiflix.Notify.success(`✅ Fulfilled promise ${pos} in ${finalDelay}ms`)).catch(error => Notiflix.Notify.failure(`❌ Rejected promise ${pos} in ${finalDelay}ms`));
 
-  return finalDelay += step
+  if (quantityСounter !== 1) {
+    finalDelay += step;
+  }
 }
