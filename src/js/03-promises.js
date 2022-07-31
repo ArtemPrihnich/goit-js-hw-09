@@ -7,11 +7,14 @@ const inputStep = document.querySelector('input[name = step]');
 const inputAmount = document.querySelector('input[name = amount]');
 const btnSubmit = document.querySelector('button');
 
+let firstDelayId = null;
 let timerId = null;
 let options = {};
 let quantityСounter = 0;
 let pos = 0;
 let finalDelay = 0;
+let promise = null;
+let onceTimeTimer = null;
 
 form.addEventListener('submit', onSubmitForm);
 
@@ -26,22 +29,30 @@ function onSubmitForm(evt) {
   const { delay, step } = options;
 
   finalDelay = delay;
+  console.log(finalDelay)
 
-  const firstDelayId = setTimeout(() => {
-    timerId = setInterval(createPromise, step, pos, finalDelay);
+  firstDelayId = setTimeout(() => {
+    if (step > delay) {
+      onceTimeTimer = setTimeout(createPromise, delay, pos, finalDelay)
+      timerId = setInterval(createPromise, step, pos, finalDelay);
+    } else {
+      timerId = setInterval(createPromise, step, pos, finalDelay)
+    }
   }, delay)
 }
 
-function createPromise(position, delay) {
+function createPromise(position, delai) {
   const { step, amount } = options;
   quantityСounter += 1;
   pos += 1;
+
+  console.log(finalDelay)
 
   if (quantityСounter === amount) {
     clearInterval(timerId);
   }
   const shouldResolve = Math.random() > 0.3;
-  const promise = new Promise((resolve, reject) => {
+  promise = new Promise((resolve, reject) => {
     if (shouldResolve) {
       resolve();
     } else {
@@ -52,6 +63,8 @@ function createPromise(position, delay) {
   promise.then(success => Notiflix.Notify.success(`✅ Fulfilled promise ${pos} in ${finalDelay}ms`)).catch(error => Notiflix.Notify.failure(`❌ Rejected promise ${pos} in ${finalDelay}ms`));
 
   if (quantityСounter !== 1) {
-    finalDelay += step;
+    return finalDelay += step;;
+  } else {
+    return; 
   }
 }
